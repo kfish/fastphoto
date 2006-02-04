@@ -4,10 +4,11 @@
 int
 main (int argc, char * argv[])
 {
-  char * filename;
+  char * infile, * outfile;
 
-  filename = argv[1];
-  resize (filename, 128, 128);
+  infile = argv[1];
+  outfile = argv[2];
+  resize (infile, outfile, 128, 128);
 
   return 0;
 }
