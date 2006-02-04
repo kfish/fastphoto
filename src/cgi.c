@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "fastphoto.h"
+#include "cache.h"
 
 #define CONTENT_TYPE_JPEG "Content-Type: image/jpeg\n"
 
@@ -73,11 +74,13 @@ cgi_init (fastphoto_t * params)
   query_string = getenv ("QUERY_STRING");
 
   params->infile = path_translated;
-  params->outfile = "/tmp/cache.jpg";
+  params->outfile = NULL;
   params->x = 0;
   params->y = 0;
 
   parse_query (params, query_string);
+
+  cache_init (params);
 
   return 1;
 }

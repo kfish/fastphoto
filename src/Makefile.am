@@ -5,7 +5,7 @@ EPEG_LIBS = -L/usr/local/lib -lepeg
 
 bin_PROGRAMS = fastphoto
 
-noinst_HEADERS = cgi.h resize.h
+noinst_HEADERS = cache.h cgi.h resize.h
 
-fastphoto_SOURCES = main.c cgi.c resize.c
+fastphoto_SOURCES = main.c cache.c cgi.c resize.c
 fastphoto_LDADD = $(EPEG_LIBS)
