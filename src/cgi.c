@@ -3,7 +3,7 @@
 
 #include "fastphoto.h"
 
-#define CONTENT_TYPE_JPEG "Content-Type: image/jpeg\n\n"
+#define CONTENT_TYPE_JPEG "Content-Type: image/jpeg\n"
 
 #define BUFSIZE 4096
 
