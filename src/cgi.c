@@ -5,6 +5,8 @@
 
 #define CONTENT_TYPE_JPEG "Content-Type: image/jpeg\n\n"
 
+#define BUFSIZE 4096
+
 static char * path_translated;
 static char * query_string;
 
@@ -36,6 +38,18 @@ content_type_jpeg ()
 }
 
 int
-blat (char * filename)
+cgi_send (fastphoto_t * params)
 {
+    unsigned char buf[BUFSIZE];
+    FILE * fd;
+    size_t n;
+
+    fd = fopen (params->outfile, "rb");
+    while ((n = fread (buf, 1, BUFSIZE, fd)) > 0) {
+        fwrite (buf, 1, n, stdout);
+    }
+    fclose (fd);
+
+    return 1;
 }
+

@@ -3,7 +3,9 @@
 
 #include "fastphoto.h"
 
-int cgi_init (fastphoto_t * params);
 int content_type_jpeg (void);
+
+int cgi_init (fastphoto_t * params);
+int cgi_send (fastphoto_t * params);
 
 #endif /* __CGI_H__ */
