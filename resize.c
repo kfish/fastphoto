@@ -12,13 +12,3 @@ resize (char * filename, int x, int y)
   epeg_close(im);
 }
 
-int
-main (int argc, char * argv[])
-{
-  char * filename;
-
-  filename = argv[1];
-  resize (filename, 128, 128);
-
-  return 0;
-}

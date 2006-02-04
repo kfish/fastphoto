@@ -4,3 +4,5 @@ INCLUDES= -I/usr/local/include
 LDFLAGS= -L/usr/local/lib -lepeg
 
 all: resize
+
+resize: resize.o command.o
