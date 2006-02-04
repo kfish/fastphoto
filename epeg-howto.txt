@@ -1,0 +1,15 @@
+<raster> u can load a jpeg form disk or a memory buffer
+<raster> GEt the data as RGB, YUV, GRAY etc. etc.
+<raster> if u like
+<raster> specify an output file or memory buffer
+<raster> query for image properties
+<raster> etc.
+<raster> ansd then tell it to "go get 'em rex"
+<raster> so to thumbnail an image to 128x128:
+<raster> Epeg_Image *im;
+<raster> im = epeg_file_open("/tmp/fish-porn.jpg");
+<raster> epeg_decode_size_set(im, 128, 128);
+<raster> epeg_file_output_set(im, "/tmp/small-fish-porn,jpg");
+<raster> epeg_encode(im);
+<raster> epeg_close(im);
+
