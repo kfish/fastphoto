@@ -34,8 +34,8 @@ main (int argc, char * argv[])
 
         params.infile = argv[1];
         params.outfile = argv[2];
-        params.x = 128;
-        params.y = 128;
+        params.x = 0;
+        params.y = 0;
     }
   
     resize (&params);

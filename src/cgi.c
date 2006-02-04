@@ -73,8 +73,8 @@ cgi_init (fastphoto_t * params)
 
   params->infile = path_translated;
   params->outfile = "/tmp/cache.jpg";
-  params->x = FASTPHOTO_DEFAULT_X;
-  params->y = FASTPHOTO_DEFAULT_Y;
+  params->x = 0;
+  params->y = 0;
 
   parse_query (params, query_string);
 
