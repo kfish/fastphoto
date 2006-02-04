@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
+#include "fastphoto.h"
 #include "cgi.h"
 #include "resize.h"
 
@@ -9,16 +11,20 @@
 int
 main (int argc, char * argv[])
 {
-  char * infile, * outfile;
-  char * query_string;
+  fastphoto_t params;
 
-  content_type_jpeg ();
+  memset (&params, 1, sizeof (fastphoto_t));
 
-  query_string = getenv ("QUERY_STRING");
+  if (cgi_init(&params)) {
 
-  infile = getenv ("PATH_TRANSLATED");
-  outfile = "/tmp/cache.jpg";
-  resize (infile, outfile, 128, 128);
+  } else {
+    params.infile = argv[1];
+    params.outfile = argv[2];
+    params.x = 128;
+    params.y = 128;
+  }
+
+  resize (&params);
 
   return 0;
 }

@@ -1,6 +1,8 @@
 #ifndef __RESIZE_H__
 #define __RESIZE_H__
 
-void resize (char * infile, char * outfile, int x, int y);
+#include "fastphoto.h"
+
+void resize (fastphoto_t * params);
 
 #endif /* __RESIZE_H__ */
