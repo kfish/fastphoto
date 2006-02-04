@@ -12,6 +12,11 @@ content_type_jpeg ()
 }
 
 int
+blat (char * filename)
+{
+}
+
+int
 main (int argc, char * argv[])
 {
   char * infile, * outfile;
@@ -21,9 +26,11 @@ main (int argc, char * argv[])
 
   query_string = getenv ("QUERY_STRING");
 
-  infile = argv[1];
-  outfile = argv[2];
+  infile = getenv ("PATH_TRANSLATED");
+  outfile = "/tmp/cache.jpg";
   resize (infile, outfile, 128, 128);
+
+  blat (outfile);
 
   return 0;
 }
