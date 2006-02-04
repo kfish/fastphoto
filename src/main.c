@@ -36,6 +36,7 @@ main (int argc, char * argv[])
         params.outfile = argv[2];
         params.x = 0;
         params.y = 0;
+	params.scale = 0;
     }
   
     resize (&params);

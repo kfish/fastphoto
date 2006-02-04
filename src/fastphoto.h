@@ -11,6 +11,7 @@ struct fastphoto_s {
     char * outfile;
     int x;
     int y;
+    int scale;
 };
 
 #endif /* __FASTPHOTO_H__ */

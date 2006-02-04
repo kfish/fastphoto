@@ -13,6 +13,7 @@ set_param (fastphoto_t * params, char * key, char * val)
 {
   if (!strcmp ("x", key)) params->x = atoi(val);
   if (!strcmp ("y", key)) params->y = atoi(val);
+  if (!strcmp ("scale", key)) params->scale = atoi(val);
 }
 
 /**

@@ -6,7 +6,7 @@ void
 resize (fastphoto_t * params)
 {
   Epeg_Image *im;
-  int x, y, w, h;
+  int x, y, w, h, scale;
 
   im = epeg_file_open(params->infile);
 
@@ -16,8 +16,13 @@ resize (fastphoto_t * params)
   y = params->y;
 
   if (x == 0 && y == 0) {
-    x = w;
-    y = h;
+    if ((scale = params->scale) == 0) {
+        x = w;
+        y = h;
+    } else {
+	x = w * scale / 100;
+	y = h * scale / 100;
+    }
   } else if (x == 0) {
     x = w*y/h;
   } else if (y == 0) {
