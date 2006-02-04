@@ -1,6 +1,9 @@
 #ifndef __FASTPHOTO_H__
 #define __FASTPHOTO_H__
 
+#define FASTPHOTO_DEFAULT_X 128
+#define FASTPHOTO_DEFAULT_Y 96
+
 typedef struct fastphoto_s fastphoto_t;
 
 struct fastphoto_s {
