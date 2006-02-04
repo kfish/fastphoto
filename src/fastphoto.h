@@ -4,6 +4,8 @@
 #define FASTPHOTO_DEFAULT_X 128
 #define FASTPHOTO_DEFAULT_Y 96
 
+#define FASTPHOTO_DEFAULT_CACHEDIR "/var/cache/fastphoto"
+
 typedef struct fastphoto_s fastphoto_t;
 
 struct fastphoto_s {

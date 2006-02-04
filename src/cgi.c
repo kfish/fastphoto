@@ -62,6 +62,7 @@ int
 cgi_init (fastphoto_t * params)
 {
   char * gateway_interface;
+  char * path_info;
   char * path_translated;
   char * query_string;
 
@@ -70,6 +71,7 @@ cgi_init (fastphoto_t * params)
     return 0;
   }
 
+  path_info = getenv ("PATH_INFO");
   path_translated = getenv ("PATH_TRANSLATED");
   query_string = getenv ("QUERY_STRING");
 
@@ -77,10 +79,11 @@ cgi_init (fastphoto_t * params)
   params->outfile = NULL;
   params->x = 0;
   params->y = 0;
+  params->scale = 0;
 
   parse_query (params, query_string);
 
-  cache_init (params);
+  cache_init (params, path_info);
 
   return 1;
 }
