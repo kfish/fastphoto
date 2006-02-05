@@ -44,18 +44,43 @@ mkdirs (char * path)
 }
 
 static int
-cache_check (fastphoto_t * params, char * cachefile)
+file_check (char * filename, time_t * mtime)
 {
     struct stat statbuf;
 
-    if (stat (cachefile, &statbuf) == -1) {
+    if (stat (filename, &statbuf) == -1) {
         switch (errno) {
             case ENOENT:
                 return 0;
 	    default:
-		fprintf (stderr, "fastphoto: Error checking %s; %s\n", cachefile, strerror (errno));
+		fprintf (stderr, "fastphoto: Error checking %s: %s\n", filename, strerror (errno));
 		return -1;
         }
+    }
+
+    *mtime = statbuf.st_mtime;
+
+    return 1;
+}
+
+static int
+cache_check (fastphoto_t * params, char * cachefile)
+{
+    time_t orig_mtime, cache_mtime;
+    int ret;
+
+    if ((ret = file_check (cachefile, &cache_mtime)) != 1) {
+        return ret;
+    }
+
+    if ((ret = file_check (params->infile, &orig_mtime)) != 1) {
+        return ret;
+    }
+
+    if (orig_mtime > cache_mtime) {
+	fprintf (stderr, "fastphoto: Removing stale cachefile %s\n", cachefile);
+        unlink (cachefile);
+        return 0;
     }
 
     params->cached = 1;
