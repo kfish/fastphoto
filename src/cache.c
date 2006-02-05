@@ -4,6 +4,7 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <unistd.h>
 
 #include "fastphoto.h"
 #include "alloc_snprintf.h"
@@ -22,8 +23,6 @@ mkdirs (char * path)
     while (active && sep != NULL) {
 	/* NUL terminate at separator */
         *sep = '\0';
-
-        fprintf (stderr, "fastphoto: Creating directory %s mode 0700 ...\n", path);
 
         if (mkdir (path, 0700) == -1) {
             switch (errno) {
@@ -44,11 +43,32 @@ mkdirs (char * path)
     return active;
 }
 
+static int
+cache_check (fastphoto_t * params, char * cachefile)
+{
+    struct stat statbuf;
+
+    if (stat (cachefile, &statbuf) == -1) {
+        switch (errno) {
+            case ENOENT:
+                return 0;
+	    default:
+		fprintf (stderr, "fastphoto: Error checking %s; %s\n", cachefile, strerror (errno));
+		return -1;
+        }
+    }
+
+    params->cached = 1;
+
+    return 1;
+}
+
 int
 cache_init (fastphoto_t * params, char * path_info)
 {
     char * cachedir = FASTPHOTO_DEFAULT_CACHEDIR;
     char * cachefile;
+    int cached;
 
     if (params->scale) {
         cachefile = alloc_snprintf ("%s%s?scale=%d", cachedir, path_info, params->scale);
@@ -56,14 +76,22 @@ cache_init (fastphoto_t * params, char * path_info)
         cachefile = alloc_snprintf ("%s%s?x=%d&y=%d", cachedir, path_info, params->x, params->y);
     }
 
-    fprintf (stderr, "fastphoto: Creating cachefile %s\n", cachefile);
+    cached = cache_check (params, cachefile);
 
-    if (mkdirs (cachefile)) {
-        params->outfile = cachefile;
+    if (cached == -1) {
     } else {
-	free (cachefile);
-	cachefile = "/tmp/cache.jpg";
-        params->outfile = cachefile;
+	params->outfile = cachefile;
+        if (cached) {
+            fprintf (stderr, "fastphoto: Using cachefile %s\n", cachefile);
+	} else {
+            fprintf (stderr, "fastphoto: Creating cachefile %s\n", cachefile);
+
+            if (!mkdirs (cachefile)) {
+                free (cachefile);
+    	        cachefile = "/tmp/cache.jpg";
+                params->outfile = cachefile;
+            }
+        }
     }
 
     return 0;

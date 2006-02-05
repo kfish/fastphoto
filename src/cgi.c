@@ -77,6 +77,7 @@ cgi_init (fastphoto_t * params)
 
   params->infile = path_translated;
   params->outfile = NULL;
+  params->cached = 0;
   params->x = 0;
   params->y = 0;
   params->scale = 0;

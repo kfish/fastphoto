@@ -39,14 +39,11 @@ main (int argc, char * argv[])
 	params.scale = 0;
     }
   
-    resize (&params);
+    if (!params.cached) {
+        resize (&params);
+    }
   
     if (cgi) {
-	/*
-        puts ("Content-Type: text/plain\n\n");
-        printf ("Infile: %s\n", params.infile);
-        printf ("Outfile: %s\n", params.outfile);
-	*/
         cgi_send (&params);
     }
   

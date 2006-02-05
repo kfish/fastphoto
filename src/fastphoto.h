@@ -11,6 +11,7 @@ typedef struct fastphoto_s fastphoto_t;
 struct fastphoto_s {
     char * infile;
     char * outfile;
+    int cached;
     int x;
     int y;
     int scale;
