@@ -1,2 +1,0 @@
-ScriptAlias /fastphoto @bindir@/fastphoto
-Action image/jpeg /fastphoto

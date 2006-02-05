@@ -175,7 +175,6 @@ AC_SUBST(SHARED_VERSION_INFO)
 AC_OUTPUT([
 Makefile
 src/Makefile
-apache/fastphoto.conf
 ])
 
 #AS_AC_EXPAND(LIBDIR, ${libdir})
