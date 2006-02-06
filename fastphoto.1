@@ -16,6 +16,9 @@ fastphoto uses libepeg, a high-performance JPEG resizing library which
 decodes only the DCT coefficients needed to reconstruct an image of the
 desired size, and avoids colorspace conversions (unless converting color
 images to grayscale).
+.PP
+fastphoto preserves the aspect of the original file unless both width and
+height options are specified.
 
 .SH "COMMANDLINE OPTIONS"
 .PP
@@ -57,11 +60,27 @@ output version information and exit
 .PP
 .SH "SERVER CONFIGURATION"
 fastphoto can be installed as a handler for files of type image/jpeg.
-The following configuration directive is for Apache httpd:
+The following configuration directives are for Apache httpd.
 
   ScriptAlias /fastphoto /usr/bin/fastphoto
   Action image/jpeg /fastphoto
 
+.SH "CGI PARAMETERS"
+.TP
+\fB\?x\fR, \fB\?width\fR
+\fB\?y\fR, \fB\?height\fR
+\fB\?s\fR, \fB\?scale\fR
+\fB\?q\fR, \fB\?quality\fR
+\fB\?g\fR, \fB\?gray\fR
+
+.SH "EXAMPLES"
+  http://www.example.com/photo.jpg?scale=10%
+  http://www.example.com/photo.jpg?x=120
+  http://www.example.com/photo.jpg?x=120&y=10
+  http://www.example.com/photo.jpg?q=20
+  http://www.example.com/photo.jpg?x=120&q=20
+  http://www.example.com/photo.jpg?gray
+  http://www.example.com/photo.jpg?x=120&gray
 .SH "SEE ALSO"
 httpd(8), apache(8)
 .BR

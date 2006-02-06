@@ -12,12 +12,20 @@
 static void
 set_param (fastphoto_t * params, char * key, char * val)
 {
-  if (!strcmp ("x", key)) params->x = atoi(val);
-  if (!strcmp ("y", key)) params->y = atoi(val);
-  if (!strcmp ("scale", key)) params->scale = atoi(val);
-  if (!strcmp ("gray", key)) params->gray = 1;
-  if (!strcmp ("quality", key)) params->quality = atoi(val);
-  if (!strcmp ("q", key)) params->quality = atoi(val);
+  if (!strncmp ("x", key, 2)) params->x = atoi(val);
+  if (!strncmp ("width", key, 6)) params->x = atoi(val);
+
+  if (!strncmp ("y", key, 2)) params->y = atoi(val);
+  if (!strncmp ("height", key, 7)) params->y = atoi(val);
+
+  if (!strncmp ("s", key, 2)) params->y = atoi(val);
+  if (!strncmp ("scale", key, 6)) params->scale = atoi(val);
+
+  if (!strncmp ("g", key, 2)) params->gray = 1;
+  if (!strncmp ("gray", key, 5)) params->gray = 1;
+
+  if (!strncmp ("quality", key, 8)) params->quality = atoi(val);
+  if (!strncmp ("q", key, 2)) params->quality = atoi(val);
 }
 
 /**
