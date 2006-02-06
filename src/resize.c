@@ -33,6 +33,9 @@ resize (fastphoto_t * params)
   if (params->gray)
     epeg_decode_colorspace_set (im, EPEG_GRAY8);
 
+  if (params->quality)
+    epeg_quality_set (im, params->quality);
+
   epeg_file_output_set(im, params->outfile);
   epeg_encode(im);
   epeg_close(im);

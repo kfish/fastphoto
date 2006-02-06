@@ -92,13 +92,25 @@ int
 cache_init (fastphoto_t * params, char * path_info)
 {
     char * cachedir = FASTPHOTO_DEFAULT_CACHEDIR;
-    char * cachefile;
+    char * cachefile, * c;
     int cached;
 
     if (params->scale) {
-        cachefile = alloc_snprintf ("%s%s?scale=%d%s", cachedir, path_info, params->scale, params->gray ? "&gray" : "");
+        cachefile = alloc_snprintf ("%s%s?scale=%d", cachedir, path_info, params->scale);
     } else {
-        cachefile = alloc_snprintf ("%s%s?x=%d&y=%d%s", cachedir, path_info, params->x, params->y, params->gray ? "&gray" : "");
+        cachefile = alloc_snprintf ("%s%s?x=%d&y=%d", cachedir, path_info, params->x, params->y);
+    }
+
+    if (params->quality) {
+        c = alloc_snprintf ("%s&q=%d", cachefile, params->quality);
+	free (cachefile);
+	cachefile = c;
+    }
+
+    if (params->gray) {
+	c = alloc_snprintf ("%s&gray", cachefile);
+	free (cachefile);
+	cachefile = c;
     }
 
     cached = cache_check (params, cachefile);
