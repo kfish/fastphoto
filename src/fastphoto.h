@@ -17,6 +17,7 @@ struct fastphoto_s {
     int scale;
     int gray;
     int quality;
+    int info;
 };
 
 #endif /* __FASTPHOTO_H__ */

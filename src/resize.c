@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <Epeg.h>
 
 #include "fastphoto.h"
@@ -7,10 +8,20 @@ resize (fastphoto_t * params)
 {
   Epeg_Image *im;
   int x, y, w, h, scale;
+  const char * comment;
 
   im = epeg_file_open(params->infile);
 
   epeg_size_get (im, &w, &h);
+
+  if (params->info) {
+    printf ("%s\t%dx%d\n", params->infile, w, h);
+    comment = epeg_comment_get (im);
+    if (comment) printf ("Comment: %s\n", comment);
+    goto im_close;
+  }
+
+  if (params->outfile == NULL) goto im_close;
 
   x = params->x;
   y = params->y;
@@ -38,6 +49,8 @@ resize (fastphoto_t * params)
 
   epeg_file_output_set(im, params->outfile);
   epeg_encode(im);
+
+im_close:
   epeg_close(im);
 }
 

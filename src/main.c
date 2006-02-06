@@ -20,13 +20,19 @@ static void
 usage (void)
 {
     printf ("Usage: fastphoto [options] infile outfile\n");
-    printf ("Resize a JPEG image\n\n");
-    printf ("Options\n");
+    printf ("Rescale a JPEG image\n");
+    printf ("\nScaling options\n");
     printf ("  -x, --width          Set the width of the output image\n");
     printf ("  -y, --height         Set the height of the output image\n");
     printf ("  -s, --scale          Set a percentage to scale the image by\n");
+    printf ("\nOutput options\n");
     printf ("  -g, --gray           Output grayscale\n");
     printf ("  -q, --quality        Set the output quality 0-100\n");
+    printf ("\nInformational options\n");
+    printf ("  -i, --info           Print information about image\n");
+    printf ("\nMiscellaneous options\n");
+    printf ("  -h, --help           Display this help and exit\n");
+    printf ("  -v, --version        Output version information and exit\n");
     printf ("\n");
 }
 
@@ -43,9 +49,10 @@ cmd_init (fastphoto_t * params, int argc, char * argv[])
     params->scale = 0;
     params->gray = 0;
     params->quality = 0; /* default */
+    params->info = 0;
 
     while (1) {
-        char * optstring = "hvx:y:s:gq";
+        char * optstring = "hvx:y:s:gq:i";
 
 #ifdef HAVE_GETOPT_LONG
 	static struct option long_options[] = {
@@ -56,6 +63,7 @@ cmd_init (fastphoto_t * params, int argc, char * argv[])
             {"scale", required_argument, 0, 's'},
             {"gray", no_argument, 0, 'g'},
             {"quality", required_argument, 0, 'q'},
+	    {"info", no_argument, 0, 'i'},
 	    {0,0,0,0}
 	};
 
@@ -89,6 +97,8 @@ cmd_init (fastphoto_t * params, int argc, char * argv[])
 	    params->gray = 1;
         case 'q': /* quality */
             params->quality = atoi (optarg);
+        case 'i': /* info */
+	    params->info = 1;
 	default:
             break;
         }
