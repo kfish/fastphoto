@@ -3,6 +3,6 @@
 
 #include "fastphoto.h"
 
-void resize (fastphoto_t * params);
+int resize (fastphoto_t * params);
 
 #endif /* __RESIZE_H__ */

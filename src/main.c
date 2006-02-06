@@ -20,7 +20,7 @@ version (void)
 static void
 usage (void)
 {
-    printf ("Usage: fastphoto [options] infile outfile\n");
+    printf ("Usage: fastphoto [options] infile [outfile]\n");
     printf ("Rescale a JPEG image\n");
     printf ("\nScaling options\n");
     printf ("  -x, --width          Set the width of the output image\n");
@@ -163,17 +163,21 @@ main (int argc, char * argv[])
         }
     }
   
+    err = 0;
     if (!params.cached) {
-        resize (&params);
+        err = resize (&params);
     }
   
-    if (cgi) {
-        cgi_send (&params);
-    } else if (!params.outfile) {
-	memory_send (&params);
+    if (!err) {
+      if (cgi) {
+          cgi_send (&params);
+      } else if (!params.outfile) {
+  	memory_send (&params);
+      }
     }
 
     if (params.data) free (params.data);
   
-    return 0;
+    if (err) return 1;
+    else return 0;
 }

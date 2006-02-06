@@ -3,7 +3,7 @@
 
 #include "fastphoto.h"
 
-void
+int
 resize (fastphoto_t * params)
 {
   Epeg_Image *im;
@@ -11,13 +11,14 @@ resize (fastphoto_t * params)
   const char * comment;
 
   im = epeg_file_open(params->infile);
+  if (im == NULL) return -1;
 
   epeg_size_get (im, &w, &h);
 
   if (params->info) {
-    printf ("%s\t%dx%d\n", params->infile, w, h);
+    printf ("%s:\tJPEG image, %dx%d\n", params->infile, w, h);
     comment = epeg_comment_get (im);
-    if (comment) printf ("Comment: %s\n", comment);
+    if (comment) printf ("  Comment: %s\n", comment);
     goto im_close;
   }
 
@@ -54,4 +55,6 @@ resize (fastphoto_t * params)
 
 im_close:
   epeg_close(im);
+
+  return 0;
 }
