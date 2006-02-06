@@ -25,6 +25,7 @@ usage (void)
     printf ("  -x, --width          Set the width of the output image\n");
     printf ("  -y, --height         Set the height of the output image\n");
     printf ("  -s, --scale          Set a percentage to scale the image by\n");
+    printf ("  -g, --gray           Output grayscale\n");
     printf ("\n");
 }
 
@@ -39,9 +40,10 @@ cmd_init (fastphoto_t * params, int argc, char * argv[])
     params->x = 0;
     params->y = 0;
     params->scale = 0;
+    params->gray = 0;
 
     while (1) {
-        char * optstring = "hvx:y:s:";
+        char * optstring = "hvx:y:s:g";
 
 #ifdef HAVE_GETOPT_LONG
 	static struct option long_options[] = {
@@ -50,6 +52,7 @@ cmd_init (fastphoto_t * params, int argc, char * argv[])
             {"width", required_argument, 0, 'x'},
             {"height", required_argument, 0, 'y'},
             {"scale", required_argument, 0, 's'},
+            {"gray", no_argument, 0, 'g'},
 	    {0,0,0,0}
 	};
 
@@ -79,6 +82,8 @@ cmd_init (fastphoto_t * params, int argc, char * argv[])
         case 's': /* scale */
             params->scale = atoi (optarg);
             break;
+	case 'g': /* gray */
+	    params->gray = 1;
 	default:
             break;
         }
