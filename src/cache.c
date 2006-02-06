@@ -43,8 +43,8 @@ mkdirs (char * path)
     return active;
 }
 
-static int
-file_check (char * filename, time_t * mtime)
+int
+file_check (char * filename, time_t * mtime, off_t * size)
 {
     struct stat statbuf;
 
@@ -58,7 +58,8 @@ file_check (char * filename, time_t * mtime)
         }
     }
 
-    *mtime = statbuf.st_mtime;
+    if (mtime) *mtime = statbuf.st_mtime;
+    if (size) *size = statbuf.st_size;
 
     return 1;
 }
@@ -69,11 +70,11 @@ cache_check (fastphoto_t * params, char * cachefile)
     time_t orig_mtime, cache_mtime;
     int ret;
 
-    if ((ret = file_check (cachefile, &cache_mtime)) != 1) {
+    if ((ret = file_check (cachefile, &cache_mtime, NULL)) != 1) {
         return ret;
     }
 
-    if ((ret = file_check (params->infile, &orig_mtime)) != 1) {
+    if ((ret = file_check (params->infile, &orig_mtime, NULL)) != 1) {
         return ret;
     }
 
@@ -86,6 +87,25 @@ cache_check (fastphoto_t * params, char * cachefile)
     params->cached = 1;
 
     return 1;
+}
+
+int
+memory_init (fastphoto_t * params)
+{
+    params->outfile = NULL;
+
+    if ((file_check (params->infile, NULL, &params->infile_size)) == 1) {
+        params->data = malloc (params->infile_size);
+        params->data_size = params->infile_size;
+    }
+
+    return 0;
+}
+
+int
+memory_send (fastphoto_t * params)
+{
+    fwrite (params->data, 1, params->data_size, stdout);
 }
 
 int
@@ -124,9 +144,10 @@ cache_init (fastphoto_t * params, char * path_info)
             fprintf (stderr, "fastphoto: Creating cachefile %s\n", cachefile);
 
             if (!mkdirs (cachefile)) {
+                fprintf (stderr, "fastphoto: Error creating cachefile %s\n", cachefile);
                 free (cachefile);
-    	        cachefile = "/tmp/cache.jpg";
-                params->outfile = cachefile;
+
+		memory_init (params);
             }
         }
     }

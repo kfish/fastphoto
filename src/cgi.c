@@ -80,10 +80,14 @@ cgi_init (fastphoto_t * params)
 
   params->infile = path_translated;
   params->outfile = NULL;
+  params->data = NULL;
+  params->data_size = 0;
   params->cached = 0;
   params->x = 0;
   params->y = 0;
   params->scale = 0;
+  params->quality = 0; /* default */
+  params->gray = 0;
 
   parse_query (params, query_string);
 
@@ -105,11 +109,16 @@ cgi_send (fastphoto_t * params)
     FILE * fd;
     size_t n;
 
-    fd = fopen (params->outfile, "rb");
-    while ((n = fread (buf, 1, BUFSIZE, fd)) > 0) {
-        fwrite (buf, 1, n, stdout);
+    if (params->outfile) {
+      fd = fopen (params->outfile, "rb");
+      while ((n = fread (buf, 1, BUFSIZE, fd)) > 0) {
+          fwrite (buf, 1, n, stdout);
+      }
+      fclose (fd);
+    } else if (params->data) {
+      fprintf (stderr, "fastphoto: Sending from memory ...\n");
+      fwrite (params->data, 1, params->data_size, stdout);
     }
-    fclose (fd);
 
     return 1;
 }

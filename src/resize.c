@@ -21,8 +21,6 @@ resize (fastphoto_t * params)
     goto im_close;
   }
 
-  if (params->outfile == NULL) goto im_close;
-
   x = params->x;
   y = params->y;
 
@@ -47,10 +45,13 @@ resize (fastphoto_t * params)
   if (params->quality)
     epeg_quality_set (im, params->quality);
 
-  epeg_file_output_set(im, params->outfile);
+  if (params->outfile)
+    epeg_file_output_set(im, params->outfile);
+  else if (params->data)
+    epeg_memory_output_set (im, &params->data, &params->data_size);
+
   epeg_encode(im);
 
 im_close:
   epeg_close(im);
 }
-

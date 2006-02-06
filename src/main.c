@@ -7,6 +7,7 @@
 #include <getopt.h>
 
 #include "fastphoto.h"
+#include "cache.h"
 #include "cgi.h"
 #include "resize.h"
 
@@ -43,13 +44,16 @@ cmd_init (fastphoto_t * params, int argc, char * argv[])
     int show_version = 0;
     int i;
 
+    params->data = NULL;
+    params->data_size = 0;
+
     params->cached = 0;
+    params->info = 0;
     params->x = 0;
     params->y = 0;
     params->scale = 0;
-    params->gray = 0;
     params->quality = 0; /* default */
-    params->info = 0;
+    params->gray = 0;
 
     while (1) {
         char * optstring = "hvx:y:s:gq:i";
@@ -125,7 +129,12 @@ cmd_init (fastphoto_t * params, int argc, char * argv[])
     }
 
     params->infile = argv[optind++];
-    params->outfile = argv[optind++];
+
+    if (optind >= argc) {
+	memory_init (params);
+    } else {
+        params->outfile = argv[optind++];
+    }
 
     return 1;
 }
@@ -160,7 +169,11 @@ main (int argc, char * argv[])
   
     if (cgi) {
         cgi_send (&params);
+    } else if (!params.outfile) {
+	memory_send (&params);
     }
+
+    if (params.data) free (params.data);
   
     return 0;
 }
