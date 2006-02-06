@@ -95,10 +95,13 @@ cmd_init (fastphoto_t * params, int argc, char * argv[])
             break;
 	case 'g': /* gray */
 	    params->gray = 1;
+	    break;
         case 'q': /* quality */
             params->quality = atoi (optarg);
+	    break;
         case 'i': /* info */
 	    params->info = 1;
+	    break;
 	default:
             break;
         }
