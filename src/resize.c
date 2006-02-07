@@ -48,7 +48,7 @@ resize (fastphoto_t * params)
 
   if (params->outfile)
     epeg_file_output_set(im, params->outfile);
-  else if (params->data)
+  else
     epeg_memory_output_set (im, &params->data, &params->data_size);
 
   epeg_encode(im);

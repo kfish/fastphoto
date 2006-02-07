@@ -123,7 +123,7 @@ cgi_send (fastphoto_t * params)
           fwrite (buf, 1, n, stdout);
       }
       fclose (fd);
-    } else if (params->data) {
+    } else {
       fprintf (stderr, "fastphoto: Sending from memory ...\n");
       fwrite (params->data, 1, params->data_size, stdout);
     }

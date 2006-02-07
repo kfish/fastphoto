@@ -94,10 +94,15 @@ memory_init (fastphoto_t * params)
 {
     params->outfile = NULL;
 
+#if 0 /* buggy Epeg, pre-20060207 */
     if ((file_check (params->infile, NULL, &params->infile_size)) == 1) {
         params->data = malloc (params->infile_size);
         params->data_size = params->infile_size;
     }
+#else
+    params->data = NULL;
+    params->data_size = 0;
+#endif
 
     return 0;
 }
