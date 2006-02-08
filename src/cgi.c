@@ -1,3 +1,5 @@
+#include "config.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -107,27 +109,7 @@ cgi_init (fastphoto_t * params)
 int
 content_type_jpeg ()
 {
-    return puts (CONTENT_TYPE_JPEG);
+    puts (CONTENT_TYPE_JPEG);
+    fflush (stdout);
+    return 0;
 }
-
-int
-cgi_send (fastphoto_t * params)
-{
-    unsigned char buf[BUFSIZE];
-    FILE * fd;
-    size_t n;
-
-    if (params->outfile) {
-      fd = fopen (params->outfile, "rb");
-      while ((n = fread (buf, 1, BUFSIZE, fd)) > 0) {
-          fwrite (buf, 1, n, stdout);
-      }
-      fclose (fd);
-    } else {
-      fprintf (stderr, "fastphoto: Sending from memory ...\n");
-      fwrite (params->data, 1, params->data_size, stdout);
-    }
-
-    return 1;
-}
-

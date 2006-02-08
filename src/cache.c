@@ -108,12 +108,6 @@ memory_init (fastphoto_t * params)
 }
 
 int
-memory_send (fastphoto_t * params)
-{
-    fwrite (params->data, 1, params->data_size, stdout);
-}
-
-int
 cache_init (fastphoto_t * params, char * path_info)
 {
     char * cachedir = FASTPHOTO_DEFAULT_CACHEDIR;
