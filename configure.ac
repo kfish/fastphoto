@@ -116,6 +116,18 @@ esac
 
 # Checks for library functions.
 
+PKG_CONFIG_PATH=$PWD/epeg:$PKG_CONFIG_PATH
+PKG_CHECK_MODULES(EPEG, epeg, HAVE_EPEG=yes,
+        AC_MSG_ERROR([
+
+could not find Epeg. please update PKG_CONFIG_PATH to point to Epeg's source
+folder or run ./get_epeg_cvs.sh
+])
+)
+AC_SUBST(EPEG_CFLAGS)
+AC_SUBST(EPEG_LIBS)
+
+
 dnl
 dnl  Configuration tests complete -- provide summary of results.
 dnl

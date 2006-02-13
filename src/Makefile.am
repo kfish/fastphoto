@@ -1,7 +1,6 @@
 # Process this file with automake to produce Makefile.in
 
-INCLUDES = -I/usr/local/include
-EPEG_LIBS = -L/usr/local/lib -lepeg
+AM_CFLAGS = $(EPEG_CFLAGS)
 
 bin_PROGRAMS = fastphoto
 
