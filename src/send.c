@@ -79,6 +79,7 @@ int
 send (fastphoto_t * params)
 {
   if (params->outfile) {
+    header_end();
     putfile (params->outfile);
   } else {
     fprintf (stderr, "fastphoto: Sending from memory ...\n");
