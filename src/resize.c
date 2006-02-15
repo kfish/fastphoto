@@ -2,7 +2,7 @@
 #include <Epeg.h>
 
 #include "fastphoto.h"
-#include "cache.h" /* file_check() */
+#include "photo.h"
 
 int
 resize (fastphoto_t * params)
@@ -58,7 +58,7 @@ resize (fastphoto_t * params)
   epeg_close(im);
 
   if (params->out.name)
-    file_check (&params->out);
+    photo_stat (&params->out);
   else
     params->out.size = (off_t)params->data_size;
 

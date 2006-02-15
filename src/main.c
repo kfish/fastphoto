@@ -11,7 +11,6 @@
 #include "cgi.h"
 #include "header.h"
 #include "resize.h"
-#include "send.h"
 
 static void
 version (void)
@@ -172,7 +171,7 @@ main (int argc, char * argv[])
   
     if (!err) {
       if (cgi) {
-        send (&params);
+        cgi_send (&params);
       } else if (!params.out.name) {
   	send_memory (&params);
       }

@@ -7,6 +7,7 @@
 #include <unistd.h>
 
 #include "fastphoto.h"
+#include "photo.h"
 #include "alloc_snprintf.h"
 
 #define PATH_SEP '/'
@@ -43,37 +44,16 @@ mkdirs (char * path)
     return active;
 }
 
-int
-file_check (photo_t * photo)
-{
-    struct stat statbuf;
-
-    if (stat (photo->name, &statbuf) == -1) {
-        switch (errno) {
-            case ENOENT:
-                return 0;
-	    default:
-		fprintf (stderr, "fastphoto: Error checking %s: %s\n", photo->name, strerror (errno));
-		return -1;
-        }
-    }
-
-    photo->mtime = statbuf.st_mtime;
-    photo->size = statbuf.st_size;
-
-    return 1;
-}
-
 static int
 cache_check (fastphoto_t * params)
 {
     int ret;
 
-    if ((ret = file_check (&params->out)) != 1) {
+    if ((ret = photo_stat (&params->out)) != 1) {
         return ret;
     }
 
-    if ((ret = file_check (&params->in)) != 1) {
+    if ((ret = photo_stat (&params->in)) != 1) {
         return ret;
     }
 

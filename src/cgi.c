@@ -6,10 +6,8 @@
 
 #include "fastphoto.h"
 #include "cache.h"
-
-#define CONTENT_TYPE_JPEG "Content-Type: image/jpeg\n"
-
-#define BUFSIZE 4096
+#include "header.h"
+#include "photo.h"
 
 static void
 set_param (fastphoto_t * params, char * key, char * val)
@@ -102,6 +100,30 @@ cgi_init (fastphoto_t * params)
   parse_query (params, query_string);
 
   cache_init (params, path_info);
+
+  return 1;
+}
+
+size_t
+send_memory (fastphoto_t * params)
+{
+    size_t n = fwrite (params->data, 1, params->data_size, stdout);
+    fflush (stdout);
+    return n;
+}
+
+int
+cgi_send (fastphoto_t * params)
+{
+  header_content_length (params->out.size);
+  header_end();
+
+  if (params->out.name) {
+    photo_put (&params->out);
+  } else {
+    fprintf (stderr, "fastphoto: Sending from memory ...\n");
+    send_memory (params);
+  }
 
   return 1;
 }
