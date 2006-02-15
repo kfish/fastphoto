@@ -90,7 +90,12 @@ cgi_init (fastphoto_t * params)
 
   parse_query (params, query_string);
 
-  cache_init (params, path_info);
+  if (params->x || params->y || params->scale || params->gray ||
+      params->quality) {
+    cache_init (params, path_info);
+  } else {
+    params->unmodified = 1;
+  }
 
   return 1;
 }
@@ -117,7 +122,9 @@ cgi_send_photo (photo_t * photo)
 int
 cgi_send (fastphoto_t * params)
 {
-  if (params->out.name) {
+  if (params->unmodified) {
+    cgi_send_photo (&params->in);
+  } else if (params->out.name) {
     cgi_send_photo (&params->out);
   } else {
     header_content_length ((off_t)params->data_size);

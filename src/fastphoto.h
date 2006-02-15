@@ -25,6 +25,7 @@ struct fastphoto_s {
   unsigned char * data;
   int data_size;
   
+  int unmodified;
   int cached;
   int info;
   

@@ -47,8 +47,6 @@ mkdirs (char * path)
 static int
 cache_check (fastphoto_t * params)
 {
-    int ret;
-
     if (params->in.mtime > params->out.mtime) {
 	fprintf (stderr, "fastphoto: Removing stale cachefile %s\n", params->out.name);
         unlink (params->out.name);
