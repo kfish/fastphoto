@@ -122,6 +122,8 @@ cgi_send_photo (photo_t * photo)
 int
 cgi_send (fastphoto_t * params)
 {
+  header_last_modified (params->in.mtime);
+
   if (params->unmodified) {
     cgi_send_photo (&params->in);
   } else if (params->out.name) {
