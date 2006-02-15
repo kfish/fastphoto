@@ -9,6 +9,7 @@
 #include "fastphoto.h"
 #include "cache.h"
 #include "cgi.h"
+#include "header.h"
 #include "resize.h"
 #include "send.h"
 
@@ -150,7 +151,7 @@ main (int argc, char * argv[])
   
     if (cgi_init(&params)) {
         cgi = 1;
-        content_type_jpeg ();
+        header_content_type_jpeg ();
     } else {
 	err = cmd_init(&params, argc, argv);
 
