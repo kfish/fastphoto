@@ -13,6 +13,7 @@
 #include <sys/sendfile.h>
 #endif
 
+#include "cgi.h"
 #include "fastphoto.h"
 
 #define BUFSIZE 4096
@@ -80,6 +81,8 @@ send (fastphoto_t * params)
     putfile (params->outfile);
   } else {
     fprintf (stderr, "fastphoto: Sending from memory ...\n");
+    content_length (params->data_size);
+    cgi_end_headers();
     send_memory (params);
   }
 

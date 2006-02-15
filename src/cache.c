@@ -70,7 +70,7 @@ cache_check (fastphoto_t * params, char * cachefile)
     time_t orig_mtime, cache_mtime;
     int ret;
 
-    if ((ret = file_check (cachefile, &cache_mtime, NULL)) != 1) {
+    if ((ret = file_check (cachefile, &cache_mtime, &params->data_size)) != 1) {
         return ret;
     }
 

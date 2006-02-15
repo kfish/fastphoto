@@ -109,7 +109,20 @@ cgi_init (fastphoto_t * params)
 int
 content_type_jpeg ()
 {
-    puts (CONTENT_TYPE_JPEG);
-    fflush (stdout);
-    return 0;
+  printf (CONTENT_TYPE_JPEG);
+  return 0;
+}
+
+int
+content_length (int len)
+{
+  return printf ("Content-Length: %d\n", len);
+}
+
+int
+cgi_end_headers (void)
+{
+  putchar('\n');
+  fflush (stdout);
+  return 0;
 }
