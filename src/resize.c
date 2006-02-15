@@ -2,6 +2,7 @@
 #include <Epeg.h>
 
 #include "fastphoto.h"
+#include "cache.h" /* file_check() */
 
 int
 resize (fastphoto_t * params)
@@ -19,7 +20,8 @@ resize (fastphoto_t * params)
     printf ("%s:\tJPEG image, %dx%d\n", params->infile, w, h);
     comment = epeg_comment_get (im);
     if (comment) printf ("  Comment: %s\n", comment);
-    goto im_close;
+    epeg_close (im);
+    return 0;
   }
 
   x = params->x;
@@ -53,8 +55,10 @@ resize (fastphoto_t * params)
 
   epeg_encode(im);
 
-im_close:
   epeg_close(im);
+
+  if (params->outfile)
+    file_check (params->outfile, NULL, &params->data_size);
 
   return 0;
 }

@@ -78,13 +78,13 @@ send_memory (fastphoto_t * params)
 int
 send (fastphoto_t * params)
 {
+  header_content_length (params->data_size);
+  header_end();
+
   if (params->outfile) {
-    header_end();
     putfile (params->outfile);
   } else {
     fprintf (stderr, "fastphoto: Sending from memory ...\n");
-    header_content_length (params->data_size);
-    header_end();
     send_memory (params);
   }
 
