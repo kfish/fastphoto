@@ -58,7 +58,7 @@ resize (fastphoto_t * params)
   epeg_close(im);
 
   if (params->out.name)
-    photo_stat (&params->out);
+    photo_init (&params->out, params->out.name);
   else
     params->out.size = (off_t)params->data_size;
 

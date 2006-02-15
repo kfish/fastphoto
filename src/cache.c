@@ -49,14 +49,6 @@ cache_check (fastphoto_t * params)
 {
     int ret;
 
-    if ((ret = photo_stat (&params->out)) != 1) {
-        return ret;
-    }
-
-    if ((ret = photo_stat (&params->in)) != 1) {
-        return ret;
-    }
-
     if (params->in.mtime > params->out.mtime) {
 	fprintf (stderr, "fastphoto: Removing stale cachefile %s\n", params->out.name);
         unlink (params->out.name);
@@ -111,7 +103,7 @@ cache_init (fastphoto_t * params, char * path_info)
 	cachefile = c;
     }
 
-    params->out.name = cachefile;
+    photo_init (&params->out, cachefile);
     cached = cache_check (params);
 
     if (cached == -1) {

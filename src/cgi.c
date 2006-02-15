@@ -86,16 +86,7 @@ cgi_init (fastphoto_t * params)
   path_translated = getenv ("PATH_TRANSLATED");
   query_string = getenv ("QUERY_STRING");
 
-  params->in.name = path_translated;
-  params->out.name = NULL;
-  params->data = NULL;
-  params->data_size = 0;
-  params->cached = 0;
-  params->x = 0;
-  params->y = 0;
-  params->scale = 0;
-  params->quality = 0; /* default */
-  params->gray = 0;
+  photo_init (&params->in, path_translated);
 
   parse_query (params, query_string);
 
