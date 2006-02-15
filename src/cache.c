@@ -44,43 +44,42 @@ mkdirs (char * path)
 }
 
 int
-file_check (char * filename, time_t * mtime, off_t * size)
+file_check (photo_t * photo)
 {
     struct stat statbuf;
 
-    if (stat (filename, &statbuf) == -1) {
+    if (stat (photo->name, &statbuf) == -1) {
         switch (errno) {
             case ENOENT:
                 return 0;
 	    default:
-		fprintf (stderr, "fastphoto: Error checking %s: %s\n", filename, strerror (errno));
+		fprintf (stderr, "fastphoto: Error checking %s: %s\n", photo->name, strerror (errno));
 		return -1;
         }
     }
 
-    if (mtime) *mtime = statbuf.st_mtime;
-    if (size) *size = statbuf.st_size;
+    photo->mtime = statbuf.st_mtime;
+    photo->size = statbuf.st_size;
 
     return 1;
 }
 
 static int
-cache_check (fastphoto_t * params, char * cachefile)
+cache_check (fastphoto_t * params)
 {
-    time_t orig_mtime, cache_mtime;
     int ret;
 
-    if ((ret = file_check (cachefile, &cache_mtime, &params->data_size)) != 1) {
+    if ((ret = file_check (&params->out)) != 1) {
         return ret;
     }
 
-    if ((ret = file_check (params->infile, &orig_mtime, NULL)) != 1) {
+    if ((ret = file_check (&params->in)) != 1) {
         return ret;
     }
 
-    if (orig_mtime > cache_mtime) {
-	fprintf (stderr, "fastphoto: Removing stale cachefile %s\n", cachefile);
-        unlink (cachefile);
+    if (params->in.mtime > params->out.mtime) {
+	fprintf (stderr, "fastphoto: Removing stale cachefile %s\n", params->out.name);
+        unlink (params->out.name);
         return 0;
     }
 
@@ -92,7 +91,7 @@ cache_check (fastphoto_t * params, char * cachefile)
 int
 memory_init (fastphoto_t * params)
 {
-    params->outfile = NULL;
+    params->out.name = NULL;
 
 #if 0 /* buggy Epeg, pre-20060207 */
     if ((file_check (params->infile, NULL, &params->infile_size)) == 1) {
@@ -132,11 +131,12 @@ cache_init (fastphoto_t * params, char * path_info)
 	cachefile = c;
     }
 
-    cached = cache_check (params, cachefile);
+    params->out.name = cachefile;
+    cached = cache_check (params);
 
     if (cached == -1) {
+      params->out.name = NULL;
     } else {
-	params->outfile = cachefile;
         if (cached) {
             fprintf (stderr, "fastphoto: Using cachefile %s\n", cachefile);
 	} else {

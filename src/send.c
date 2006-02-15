@@ -21,13 +21,13 @@
 
 #if HAVE_SENDFILE
 static int
-putfile (const char * filename)
+photo_put (photo_t * photo)
 {
   int fd;
   ssize_t n;
   off_t offset = 0;
 
-  if ((fd = open (filename, O_RDONLY)) == -1)
+  if ((fd = open (photo->name, O_RDONLY)) == -1)
     goto errout;
 
   while ((n = sendfile (STDOUT_FILENO, fd, &offset, BUFSIZE)) != 0) {
@@ -51,13 +51,13 @@ errout:
 }
 #else
 static int
-putfile (const char * filename)
+photo_put (photo_t * photo)
 {
   unsigned char buf[BUFSIZE];
   FILE * f;
   size_t n;
 
-  f = fopen (filename, "rb");
+  f = fopen (photo->name, "rb");
   while ((n = fread (buf, 1, BUFSIZE, f)) > 0) {
       fwrite (buf, 1, n, stdout);
   }
@@ -78,11 +78,11 @@ send_memory (fastphoto_t * params)
 int
 send (fastphoto_t * params)
 {
-  header_content_length (params->data_size);
+  header_content_length (params->out.size);
   header_end();
 
-  if (params->outfile) {
-    putfile (params->outfile);
+  if (params->out.name) {
+    photo_put (&params->out);
   } else {
     fprintf (stderr, "fastphoto: Sending from memory ...\n");
     send_memory (params);

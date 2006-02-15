@@ -130,12 +130,12 @@ cmd_init (fastphoto_t * params, int argc, char * argv[])
         return -1;
     }
 
-    params->infile = argv[optind++];
+    params->in.name = argv[optind++];
 
     if (optind >= argc) {
 	memory_init (params);
     } else {
-        params->outfile = argv[optind++];
+        params->out.name = argv[optind++];
     }
 
     return 1;
@@ -173,7 +173,7 @@ main (int argc, char * argv[])
     if (!err) {
       if (cgi) {
         send (&params);
-      } else if (!params.outfile) {
+      } else if (!params.out.name) {
   	send_memory (&params);
       }
     }

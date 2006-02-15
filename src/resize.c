@@ -11,13 +11,13 @@ resize (fastphoto_t * params)
   int x, y, w, h, scale;
   const char * comment;
 
-  im = epeg_file_open(params->infile);
+  im = epeg_file_open(params->in.name);
   if (im == NULL) return -1;
 
   epeg_size_get (im, &w, &h);
 
   if (params->info) {
-    printf ("%s:\tJPEG image, %dx%d\n", params->infile, w, h);
+    printf ("%s:\tJPEG image, %dx%d\n", params->in.name, w, h);
     comment = epeg_comment_get (im);
     if (comment) printf ("  Comment: %s\n", comment);
     epeg_close (im);
@@ -48,8 +48,8 @@ resize (fastphoto_t * params)
   if (params->quality)
     epeg_quality_set (im, params->quality);
 
-  if (params->outfile)
-    epeg_file_output_set(im, params->outfile);
+  if (params->out.name)
+    epeg_file_output_set(im, params->out.name);
   else
     epeg_memory_output_set (im, &params->data, &params->data_size);
 
@@ -57,8 +57,10 @@ resize (fastphoto_t * params)
 
   epeg_close(im);
 
-  if (params->outfile)
-    file_check (params->outfile, NULL, &params->data_size);
+  if (params->out.name)
+    file_check (&params->out);
+  else
+    params->out.size = (off_t)params->data_size;
 
   return 0;
 }

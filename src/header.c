@@ -13,9 +13,9 @@ header_content_type_jpeg ()
 }
 
 int
-header_content_length (int len)
+header_content_length (off_t len)
 {
-  return printf ("Content-Length: %d\n", len);
+  return printf ("Content-Length: %ld\n", (long)len);
 }
 
 int
