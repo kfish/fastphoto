@@ -4,7 +4,7 @@
 #include "fastphoto.h"
 
 int cgi_init (fastphoto_t * params);
-int cgi_send (fastphoto_t * params);
+int cgi_send (photo_t * photo);
 
 size_t send_memory (fastphoto_t * params);
 

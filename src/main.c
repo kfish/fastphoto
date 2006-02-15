@@ -170,10 +170,10 @@ main (int argc, char * argv[])
     }
   
     if (!err) {
-      if (cgi) {
-        cgi_send (&params);
-      } else if (!params.out.name) {
-  	send_memory (&params);
+      if (!params.out.name) {
+	send_memory (&params);
+      } else if (cgi) {
+        cgi_send (&params.out);
       }
     }
 

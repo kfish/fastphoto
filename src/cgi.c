@@ -113,17 +113,12 @@ send_memory (fastphoto_t * params)
 }
 
 int
-cgi_send (fastphoto_t * params)
+cgi_send (photo_t * photo)
 {
-  header_content_length (params->out.size);
+  header_content_length (photo->size);
   header_end();
 
-  if (params->out.name) {
-    photo_put (&params->out);
-  } else {
-    fprintf (stderr, "fastphoto: Sending from memory ...\n");
-    send_memory (params);
-  }
+  photo_put (photo);
 
   return 1;
 }
