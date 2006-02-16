@@ -13,7 +13,7 @@ header_last_modified (time_t mtime)
 {
   char buf[30];
 
-  http_date_snprint (buf, 30, mtime);
+  httpdate_snprint (buf, 30, mtime);
   return printf ("Last-Modified: %s\n", buf);
 }
 
