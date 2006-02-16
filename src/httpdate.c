@@ -52,7 +52,7 @@ httpdate_parse (char * s, int n)
     }
   }
 
-  d.tm_year += 1900;
+  d.tm_year -= 1900;
 
   return mktime (&d);
 }
