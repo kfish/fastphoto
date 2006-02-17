@@ -165,7 +165,7 @@ main (int argc, char * argv[])
     }
   
     err = 0;
-    if (!(params.unmodified || params.cached)) {
+    if (!(params.nochange || params.cached)) {
         err = resize (&params);
     }
   

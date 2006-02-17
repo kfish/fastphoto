@@ -94,7 +94,7 @@ cgi_init (fastphoto_t * params)
       params->quality) {
     cache_init (params, path_info);
   } else {
-    params->unmodified = 1;
+    params->nochange = 1;
   }
 
   return 1;
@@ -124,7 +124,7 @@ cgi_send (fastphoto_t * params)
 {
   header_last_modified (params->in.mtime);
 
-  if (params->unmodified) {
+  if (params->nochange) {
     cgi_send_photo (&params->in);
   } else if (params->out.name) {
     cgi_send_photo (&params->out);
