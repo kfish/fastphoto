@@ -147,10 +147,15 @@ main (int argc, char * argv[])
     fastphoto_t params;
   
     memset (&params, 0, sizeof (fastphoto_t));
+
+    cgi = cgi_init(&params);
   
-    if (cgi_init(&params)) {
-        cgi = 1;
+    if (cgi == 1) {
         header_content_type_jpeg ();
+    } else if (cgi == HTTP_NOT_MODIFIED) {
+      header_not_modified();
+      header_end();
+      goto cleanup;
     } else {
 	err = cmd_init(&params, argc, argv);
 
@@ -176,6 +181,8 @@ main (int argc, char * argv[])
 	send_memory (&params);
       }
     }
+
+ cleanup:
 
     if (params.data) free (params.data);
   

@@ -7,6 +7,7 @@
 #include "fastphoto.h"
 #include "cache.h"
 #include "header.h"
+#include "httpdate.h"
 #include "photo.h"
 
 static void
@@ -76,17 +77,35 @@ cgi_init (fastphoto_t * params)
   char * path_info;
   char * path_translated;
   char * query_string;
+  char * if_modified_since;
+  time_t since_time;
 
   gateway_interface = getenv ("GATEWAY_INTERFACE");
   if (gateway_interface == NULL) {
     return 0;
   }
 
+  httpdate_init ();
+
   path_info = getenv ("PATH_INFO");
   path_translated = getenv ("PATH_TRANSLATED");
   query_string = getenv ("QUERY_STRING");
+  if_modified_since = getenv ("HTTP_IF_MODIFIED_SINCE");
 
   photo_init (&params->in, path_translated);
+
+  if (if_modified_since != NULL) {
+    int len;
+
+    fprintf (stderr, "If-Modified-Since: %s\n", if_modified_since);
+
+    len = strlen (if_modified_since) + 1;
+    since_time = httpdate_parse (if_modified_since, len);
+
+    if (params->in.mtime <= since_time) {
+      return HTTP_NOT_MODIFIED;
+    }
+  }
 
   parse_query (params, query_string);
 

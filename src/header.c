@@ -18,6 +18,13 @@ header_last_modified (time_t mtime)
 }
 
 int
+header_not_modified (void)
+{
+  fprintf (stderr, "304 Not Modified\n");
+  return printf ("Status: 304 Not Modified\n");
+}
+
+int
 header_content_type_jpeg ()
 {
   return printf (CONTENT_TYPE_JPEG);

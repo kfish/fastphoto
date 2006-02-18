@@ -11,6 +11,12 @@ static char * wdays[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 static char * months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
 			  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
+void
+httpdate_init (void)
+{
+  tzset();
+}
+
 int
 httpdate_snprint (char * buf, int n, time_t mtime)
 {
@@ -53,6 +59,8 @@ httpdate_parse (char * s, int n)
   }
 
   d.tm_year -= 1900;
+
+  d.tm_sec -= timezone;
 
   return mktime (&d);
 }
