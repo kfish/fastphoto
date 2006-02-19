@@ -5,6 +5,8 @@ AM_CFLAGS = $(EPEG_CFLAGS)
 bin_PROGRAMS = fastphoto
 noinst_PROGRAMS = httpdate_test
 
+TESTS_ENVIRONMENT = $(VALGRIND_ENVIRONMENT)
+
 TESTS = httpdate_test
 
 noinst_HEADERS = alloc_snprintf.h cache.h cgi.h cmd.h header.h httpdate.h memory.h photo.h resize.h
