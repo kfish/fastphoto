@@ -96,7 +96,7 @@ cgi_send_photo (photo_t * photo)
   return 0;
 }
 
-int
+static int
 cgi_send (fastphoto_t * params)
 {
   header_last_modified (params->in.mtime);
