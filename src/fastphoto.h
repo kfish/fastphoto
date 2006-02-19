@@ -8,8 +8,6 @@
 
 #define FASTPHOTO_DEFAULT_CACHEDIR "/var/cache/fastphoto"
 
-#define HTTP_NOT_MODIFIED 304
-
 typedef struct fastphoto_s fastphoto_t;
 typedef struct photo_s photo_t;
 

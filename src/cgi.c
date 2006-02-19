@@ -9,6 +9,7 @@
 #include "header.h"
 #include "httpdate.h"
 #include "photo.h"
+#include "resize.h"
 
 static void
 set_param (fastphoto_t * params, char * key, char * val)
@@ -71,54 +72,17 @@ parse_query (fastphoto_t * params, char * query)
 }
 
 int
-cgi_init (fastphoto_t * params)
+cgi_test (void)
 {
   char * gateway_interface;
-  char * path_info;
-  char * path_translated;
-  char * query_string;
-  char * if_modified_since;
-  time_t since_time;
 
   gateway_interface = getenv ("GATEWAY_INTERFACE");
   if (gateway_interface == NULL) {
     return 0;
   }
 
-  httpdate_init ();
-
-  path_info = getenv ("PATH_INFO");
-  path_translated = getenv ("PATH_TRANSLATED");
-  query_string = getenv ("QUERY_STRING");
-  if_modified_since = getenv ("HTTP_IF_MODIFIED_SINCE");
-
-  photo_init (&params->in, path_translated);
-
-  if (if_modified_since != NULL) {
-    int len;
-
-    fprintf (stderr, "If-Modified-Since: %s\n", if_modified_since);
-
-    len = strlen (if_modified_since) + 1;
-    since_time = httpdate_parse (if_modified_since, len);
-
-    if (params->in.mtime <= since_time) {
-      return HTTP_NOT_MODIFIED;
-    }
-  }
-
-  parse_query (params, query_string);
-
-  if (params->x || params->y || params->scale || params->gray ||
-      params->quality) {
-    cache_init (params, path_info);
-  } else {
-    params->nochange = 1;
-  }
-
   return 1;
 }
-
 size_t
 send_memory (fastphoto_t * params)
 {
@@ -127,7 +91,7 @@ send_memory (fastphoto_t * params)
     return n;
 }
 
-int
+static int
 cgi_send_photo (photo_t * photo)
 {
   header_content_length (photo->size);
@@ -155,4 +119,61 @@ cgi_send (fastphoto_t * params)
   }
 
   return 0;
+}
+
+int
+cgi_main (fastphoto_t * params)
+{
+  int err = 0;
+  char * path_info;
+  char * path_translated;
+  char * query_string;
+  char * if_modified_since;
+  time_t since_time;
+
+  httpdate_init ();
+
+  path_info = getenv ("PATH_INFO");
+  path_translated = getenv ("PATH_TRANSLATED");
+  query_string = getenv ("QUERY_STRING");
+  if_modified_since = getenv ("HTTP_IF_MODIFIED_SINCE");
+
+  photo_init (&params->in, path_translated);
+
+  if (if_modified_since != NULL) {
+    int len;
+
+    fprintf (stderr, "If-Modified-Since: %s\n", if_modified_since);
+
+    len = strlen (if_modified_since) + 1;
+    since_time = httpdate_parse (if_modified_since, len);
+
+    if (params->in.mtime <= since_time) {
+      header_not_modified();
+      header_end();
+      return 1;
+    }
+  }
+
+  header_content_type_jpeg ();
+
+  parse_query (params, query_string);
+
+  if (params->x || params->y || params->scale || params->gray ||
+      params->quality) {
+    cache_init (params, path_info);
+  } else {
+    params->nochange = 1;
+  }
+
+  err = 0;
+  if (!(params->nochange || params->cached)) {
+    err = resize (params);
+  }
+  
+  if (!err) {
+    cgi_send (params);
+  }
+
+  return err;
 }

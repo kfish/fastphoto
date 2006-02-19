@@ -39,153 +39,120 @@ usage (void)
 }
 
 static int
-cmd_init (fastphoto_t * params, int argc, char * argv[])
+cmd_main (fastphoto_t * params, int argc, char * argv[])
 {
-    int show_help = 0;
-    int show_version = 0;
-    int i;
+  int err = 0;
+  int show_help = 0;
+  int show_version = 0;
+  int i;
 
-    params->data = NULL;
-    params->data_size = 0;
-
-    params->cached = 0;
-    params->info = 0;
-    params->x = 0;
-    params->y = 0;
-    params->scale = 0;
-    params->quality = 0; /* default */
-    params->gray = 0;
-
-    while (1) {
-        char * optstring = "hvx:y:s:gq:i";
+  while (1) {
+    char * optstring = "hvx:y:s:gq:i";
 
 #ifdef HAVE_GETOPT_LONG
-	static struct option long_options[] = {
-            {"help", no_argument, 0, 'h'},
-            {"version", no_argument, 0, 'v'},
-            {"width", required_argument, 0, 'x'},
-            {"height", required_argument, 0, 'y'},
-            {"scale", required_argument, 0, 's'},
-            {"gray", no_argument, 0, 'g'},
-            {"quality", required_argument, 0, 'q'},
-	    {"info", no_argument, 0, 'i'},
-	    {0,0,0,0}
-	};
+    static struct option long_options[] = {
+      {"help", no_argument, 0, 'h'},
+      {"version", no_argument, 0, 'v'},
+      {"width", required_argument, 0, 'x'},
+      {"height", required_argument, 0, 'y'},
+      {"scale", required_argument, 0, 's'},
+      {"gray", no_argument, 0, 'g'},
+      {"quality", required_argument, 0, 'q'},
+      {"info", no_argument, 0, 'i'},
+      {0,0,0,0}
+    };
 
-	i = getopt_long (argc, argv, optstring, long_options, NULL);
+    i = getopt_long (argc, argv, optstring, long_options, NULL);
 #else
-	i = getopt (argc, argv, optstring);
+    i = getopt (argc, argv, optstring);
 #endif
 
-	if (i == -1) break;
-	if (i == ':') {
-            return -1;
-        }
-
-	switch (i) {
-        case 'h': /* help */
-            show_help = 1;
-            break;
-        case 'v': /* version */
-            show_version = 1;
-            break;
-        case 'x': /* width */
-            params->x = atoi (optarg);
-            break;
-        case 'y': /* height */
-            params->y = atoi (optarg);
-            break;
-        case 's': /* scale */
-            params->scale = atoi (optarg);
-            break;
-	case 'g': /* gray */
-	    params->gray = 1;
-	    break;
-        case 'q': /* quality */
-            params->quality = atoi (optarg);
-	    break;
-        case 'i': /* info */
-	    params->info = 1;
-	    break;
-	default:
-            break;
-        }
-
+    if (i == -1) break;
+    if (i == ':') {
+      usage ();
+      return 1;
     }
 
-    if (show_version) {
-        version ();
+    switch (i) {
+    case 'h': /* help */
+      show_help = 1;
+      break;
+    case 'v': /* version */
+      show_version = 1;
+      break;
+    case 'x': /* width */
+      params->x = atoi (optarg);
+      break;
+    case 'y': /* height */
+      params->y = atoi (optarg);
+      break;
+    case 's': /* scale */
+      params->scale = atoi (optarg);
+      break;
+    case 'g': /* gray */
+      params->gray = 1;
+      break;
+    case 'q': /* quality */
+      params->quality = atoi (optarg);
+      break;
+    case 'i': /* info */
+      params->info = 1;
+      break;
+    default:
+      break;
     }
 
-    if (show_help) {
-        usage ();
-    }
+  }
 
-    if (show_version || show_help) {
-        return 0;
-    }
+  if (show_version) {
+    version ();
+  }
 
-    if (optind >= argc) {
-        return -1;
-    }
+  if (show_help) {
+    usage ();
+  }
 
-    params->in.name = argv[optind++];
+  if (show_version || show_help) {
+    return 0;
+  }
 
-    if (optind >= argc) {
-	memory_init (params);
-    } else {
-        params->out.name = argv[optind++];
-    }
-
+  if (optind >= argc) {
+    usage ();
     return 1;
+  }
+
+  params->in.name = argv[optind++];
+
+  if (optind >= argc) {
+    memory_init (params);
+  } else {
+    params->out.name = argv[optind++];
+  }
+
+  err = resize (params);
+    
+  if (!err)
+    send_memory (params);
+    
+  return err;
 }
 
 int
 main (int argc, char * argv[])
 {
-    int cgi = 0, err = 0; 
-    fastphoto_t params;
+  int err = 0; 
+  fastphoto_t params;
   
-    memset (&params, 0, sizeof (fastphoto_t));
+  memset (&params, 0, sizeof (fastphoto_t));
 
-    cgi = cgi_init(&params);
+  if (cgi_test ()) {
+    err = cgi_main (&params);
+  } else {
+    err = cmd_main (&params, argc, argv);
+  }
   
-    if (cgi == 1) {
-        header_content_type_jpeg ();
-    } else if (cgi == HTTP_NOT_MODIFIED) {
-      header_not_modified();
-      header_end();
-      goto cleanup;
-    } else {
-	err = cmd_init(&params, argc, argv);
-
-	if (err == 0) {
-            /* Just handled --help or --version */
-	    exit (0);
-	} else if (err == -1) {
-            /* Usage error */
-            usage ();
-            exit (1);
-        }
-    }
+  if (params.data) free (params.data);
   
-    err = 0;
-    if (!(params.nochange || params.cached)) {
-        err = resize (&params);
-    }
-  
-    if (!err) {
-      if (cgi) {
-        cgi_send (&params);
-      } else if (!params.out.name) {
-	send_memory (&params);
-      }
-    }
-
- cleanup:
-
-    if (params.data) free (params.data);
-  
-    if (err) return 1;
-    else return 0;
+  if (err) return 1;
+  else return 0;
 }
