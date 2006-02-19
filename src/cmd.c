@@ -23,17 +23,17 @@ usage (void)
     printf ("Usage: fastphoto [options] infile [outfile]\n");
     printf ("Rescale a JPEG image\n");
     printf ("\nScaling options\n");
-    printf ("  -x, --width          Set the width of the output image\n");
-    printf ("  -y, --height         Set the height of the output image\n");
+    printf ("  -w, --width          Set the width of the output image\n");
+    printf ("  -h, --height         Set the height of the output image\n");
     printf ("  -s, --scale          Set a percentage to scale the image by\n");
     printf ("\nOutput options\n");
-    printf ("  -g, --gray           Output grayscale\n");
+    printf ("  -G, --gray, --grey   Output grayscale\n");
     printf ("  -q, --quality        Set the output quality 0-100\n");
     printf ("\nInformational options\n");
     printf ("  -i, --info           Print information about image\n");
     printf ("\nMiscellaneous options\n");
-    printf ("  -h, --help           Display this help and exit\n");
-    printf ("  -v, --version        Output version information and exit\n");
+    printf ("  -H, --help           Display this help and exit\n");
+    printf ("  -V, --version        Output version information and exit\n");
     printf ("\n");
 }
 
@@ -46,16 +46,16 @@ cmd_main (fastphoto_t * params, int argc, char * argv[])
   int i;
 
   while (1) {
-    char * optstring = "hvx:y:s:gq:i";
+    char * optstring = "HVw:h:s:Gq:i";
 
 #ifdef HAVE_GETOPT_LONG
     static struct option long_options[] = {
-      {"help", no_argument, 0, 'h'},
-      {"version", no_argument, 0, 'v'},
-      {"width", required_argument, 0, 'x'},
-      {"height", required_argument, 0, 'y'},
+      {"help", no_argument, 0, 'H'},
+      {"version", no_argument, 0, 'V'},
+      {"width", required_argument, 0, 'w'},
+      {"height", required_argument, 0, 'h'},
       {"scale", required_argument, 0, 's'},
-      {"gray", no_argument, 0, 'g'},
+      {"gray", no_argument, 0, 'G'},
       {"quality", required_argument, 0, 'q'},
       {"info", no_argument, 0, 'i'},
       {0,0,0,0}
@@ -73,22 +73,22 @@ cmd_main (fastphoto_t * params, int argc, char * argv[])
     }
 
     switch (i) {
-    case 'h': /* help */
+    case 'H': /* help */
       show_help = 1;
       break;
-    case 'v': /* version */
+    case 'V': /* version */
       show_version = 1;
       break;
-    case 'x': /* width */
+    case 'w': /* width */
       params->x = atoi (optarg);
       break;
-    case 'y': /* height */
+    case 'h': /* height */
       params->y = atoi (optarg);
       break;
     case 's': /* scale */
       params->scale = atoi (optarg);
       break;
-    case 'g': /* gray */
+    case 'G': /* gray */
       params->gray = 1;
       break;
     case 'q': /* quality */
