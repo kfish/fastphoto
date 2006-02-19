@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+#include "tests.h"
+
 #include "httpdate.h"
 
 int
@@ -9,15 +11,22 @@ main (int argc, char * argv[])
   char d_out[30];
   time_t t;
 
-  printf ("<< Date: %s\n", d_in);
+  INFO ("Parsing date:");
+  INFO (d_in);
   t = httpdate_parse (d_in, 30);
 
   if (t == (time_t)-1) {
-    printf ("** Parse error\n");
+    FAIL ("Parse error");
   } else {
+    t -= timezone;
     httpdate_snprint (d_out, 30, t);
 
-    printf (">> Date: %s\n", d_out);
+    INFO ("Output date:");
+    INFO (d_out);
+
+    if (strcmp (d_in, d_out)) {
+      FAIL ("Mismatched dates");
+    }
   }
 
   return 0;
