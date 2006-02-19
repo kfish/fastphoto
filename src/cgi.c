@@ -8,6 +8,7 @@
 #include "cache.h"
 #include "header.h"
 #include "httpdate.h"
+#include "memory.h"
 #include "photo.h"
 #include "resize.h"
 
@@ -83,13 +84,6 @@ cgi_test (void)
 
   return 1;
 }
-size_t
-send_memory (fastphoto_t * params)
-{
-    size_t n = fwrite (params->data, 1, params->data_size, stdout);
-    fflush (stdout);
-    return n;
-}
 
 static int
 cgi_send_photo (photo_t * photo)
@@ -115,7 +109,7 @@ cgi_send (fastphoto_t * params)
     header_content_length ((off_t)params->data_size);
     header_end();
 
-    send_memory (params);
+    memory_send (params);
   }
 
   return 0;
