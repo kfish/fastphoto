@@ -116,17 +116,28 @@ esac
 
 # Checks for library functions.
 
+#
+# Detect Epeg
+#
+
 PKG_CONFIG_PATH=$PWD/epeg:$PKG_CONFIG_PATH
-PKG_CHECK_MODULES(EPEG, epeg, HAVE_EPEG=yes,
-        AC_MSG_ERROR([
+PKG_CHECK_MODULES(EPEG, epeg >= 0.9.0,
+                  HAVE_EPEG="yes", HAVE_EPEG="no")
 
-could not find Epeg. please update PKG_CONFIG_PATH to point to Epeg's source
-folder or run ./get_epeg_cvs.sh
+if test "$HAVE_EPEG" = "yes" ; then
+  AC_DEFINE([HAVE_EPEG], [], [Define if epeg is found])
+  AC_SUBST(EPEG_CFLAGS)
+  AC_SUBST(EPEG_LIBS)
+else
+  AC_MSG_ERROR([
+***
+*** Epeg 1.0 development library is not installed
+***
+*** Please update PKG_CONFIG_PATH to point to Epeg's source folder
+*** or run ./get_epeg_cvs.sh
+***
 ])
-)
-AC_SUBST(EPEG_CFLAGS)
-AC_SUBST(EPEG_LIBS)
-
+fi
 
 dnl
 dnl  Configuration tests complete -- provide summary of results.
