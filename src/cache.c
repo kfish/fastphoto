@@ -98,6 +98,7 @@ cache_init (fastphoto_t * params, char * path_info)
             if (!mkdirs (cachefile)) {
                 fprintf (stderr, "fastphoto: Error creating cachefile %s\n", cachefile);
                 free (cachefile);
+		params->out.name = NULL;
 
 		memory_init (params);
             }

@@ -169,5 +169,9 @@ cgi_main (fastphoto_t * params)
     cgi_send (params);
   }
 
+  if (params->out.name) {
+    free (params->out.name);
+  }
+
   return err;
 }
