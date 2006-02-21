@@ -60,30 +60,12 @@ output version information and exit
 .PP
 .SH "SERVER CONFIGURATION"
 fastphoto can be installed as a handler for files of type image/jpeg.
-The following configuration directives are for Apache httpd.
 
-  ScriptAlias /fastphoto /usr/bin/fastphoto
-  Action image/jpeg /fastphoto
+For more information see http://www.kfish.org/software/fastphoto
 
-.SH "CGI PARAMETERS"
-.TP
-\fB\?w\fR, \fB\?width\fR
-\fB\?h\fR, \fB\?height\fR
-\fB\?s\fR, \fB\?scale\fR
-\fB\?q\fR, \fB\?quality\fR
-\fB\?g\fR, \fB\?gray\fR
-
-.SH "EXAMPLES"
-  http://www.example.com/photo.jpg?scale=10%
-  http://www.example.com/photo.jpg?x=120
-  http://www.example.com/photo.jpg?x=120&y=10
-  http://www.example.com/photo.jpg?q=20
-  http://www.example.com/photo.jpg?x=120&q=20
-  http://www.example.com/photo.jpg?gray
-  http://www.example.com/photo.jpg?x=120&gray
 .SH "SEE ALSO"
 httpd(8), apache(8)
-.BR
+
 .SH AUTHOR
 Conrad Parker <conrad@metadecks.org>, February 2006
 

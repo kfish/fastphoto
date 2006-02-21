@@ -9,7 +9,7 @@ TESTS_ENVIRONMENT = $(VALGRIND_ENVIRONMENT)
 
 TESTS = httpdate_test cgi_test
 
-noinst_HEADERS = alloc_snprintf.h cache.h cgi.h cmd.h header.h httpdate.h memory.h photo.h resize.h
+noinst_HEADERS = fastphoto.h alloc_snprintf.h cache.h cgi.h cmd.h header.h httpdate.h memory.h photo.h resize.h tests.h
 
 fastphoto_SOURCES = main.c alloc_snprintf.c cache.c cgi.c cmd.c header.c httpdate.c memory.c photo.c resize.c
 fastphoto_LDADD = $(EPEG_LIBS)
