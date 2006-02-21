@@ -8,6 +8,7 @@
 
 #include "fastphoto.h"
 #include "photo.h"
+#include "memory.h"
 #include "alloc_snprintf.h"
 
 #define PATH_SEP '/'
