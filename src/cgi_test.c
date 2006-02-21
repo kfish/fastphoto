@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+
+#include "tests.h"
 
 #include "fastphoto.h"
 #include "cgi.h"
@@ -19,6 +22,10 @@ main (int argc, char * argv[])
   setenv ("PATH_INFO", "/TEST/test.jpg", 1);
   setenv ("PATH_TRANSLATED", "./test.jpg", 1);
   setenv ("QUERY_STRING", "width=100", 1);
+
+  INFO("Closing standard output, so as not to blat the file at the terminal");
+  INFO("Expecting fastphoto to declare a Bad file descriptor");
+  close(STDOUT_FILENO);
   
   err = cgi_main (&params);
 
