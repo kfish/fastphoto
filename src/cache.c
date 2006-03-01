@@ -62,7 +62,7 @@ cache_check (fastphoto_t * params)
 int
 cache_init (fastphoto_t * params, char * path_info)
 {
-    char * cachedir = FASTPHOTO_DEFAULT_CACHEDIR;
+    char * cachedir = params->config.cachedir;
     char * cachefile, * c;
     int cached;
 

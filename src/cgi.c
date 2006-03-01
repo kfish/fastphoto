@@ -10,6 +10,7 @@
 #include "httpdate.h"
 #include "memory.h"
 #include "photo.h"
+#include "read_config.h"
 #include "resize.h"
 
 static void
@@ -150,6 +151,8 @@ cgi_main (fastphoto_t * params)
   }
 
   header_content_type_jpeg ();
+
+  config_init (params);
 
   parse_query (params, query_string);
 

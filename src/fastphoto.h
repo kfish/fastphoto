@@ -9,7 +9,12 @@
 #define FASTPHOTO_DEFAULT_CACHEDIR "/var/cache/fastphoto"
 
 typedef struct fastphoto_s fastphoto_t;
+typedef struct config_s config_t;
 typedef struct photo_s photo_t;
+
+struct config_s {
+  char * cachedir;
+};
 
 struct photo_s {
   char * name;
@@ -18,6 +23,8 @@ struct photo_s {
 };
 
 struct fastphoto_s {
+  config_t config;
+
   photo_t in;
   photo_t out;
 
