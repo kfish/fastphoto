@@ -1,4 +1,4 @@
 <IfModule mod_actions.c>
-  ScriptAlias /fastphoto /usr/local/bin/fastphoto
+  ScriptAlias /fastphoto @BINDIR@/fastphoto
   Action image/jpeg /fastphoto
 </IfModule>

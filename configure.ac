@@ -195,15 +195,18 @@ else
 AC_SUBST(SHLIB_VERSION_ARG)
 AC_SUBST(SHARED_VERSION_INFO)
 
-AC_OUTPUT([
-Makefile
-src/Makefile
-])
-
 #AS_AC_EXPAND(LIBDIR, ${libdir})
 #AS_AC_EXPAND(INCLUDEDIR, ${includedir})
 AS_AC_EXPAND(BINDIR, ${bindir})
 AS_AC_EXPAND(DOCDIR, ${datadir}/doc)
+
+AC_SUBST(BINDIR)
+
+AC_OUTPUT([
+Makefile
+src/Makefile
+apache/fastphoto.conf
+])
 
 AC_MSG_RESULT([
 ------------------------------------------------------------------------
