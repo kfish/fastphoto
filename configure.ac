@@ -120,7 +120,7 @@ esac
 # Detect Epeg
 #
 
-PKG_CONFIG_PATH=$PWD/epeg:$PKG_CONFIG_PATH
+export PKG_CONFIG_PATH=$PWD/epeg:$PKG_CONFIG_PATH
 PKG_CHECK_MODULES(EPEG, epeg >= 0.9.0,
                   HAVE_EPEG="yes", HAVE_EPEG="no")
 
