@@ -1,0 +1,49 @@
+FastPhoto
+=========
+
+FastPhoto is a high-performance rescaling tool for photographic images. It
+can be installed on a web server as a handler for files of type image/jpeg,
+providing fast server-side resizing with (optional) transparent caching. It
+can also be used as a commandline application.
+
+FastPhoto uses Epeg, a high-performance JPEG resizing library which decodes
+only the DCT coefficients needed to reconstruct an image of the desired size,
+and avoids colorspace conversions where possible.
+
+FastPhoto preserves the aspect of the original file unless both width and
+height options are specified. 
+
+Usage
+-----
+
+For details of commandline options, see the fastphoto.1 man page included in
+this source distribution.
+
+For web server configuration details, see the FastPhoto homepage:
+
+http://www.kfish.org/software/fastphoto/
+
+Development
+-----------
+
+FastPhoto is maintained in Subversion:
+svn co http://svn.kfish.org/fastphoto/trunk fastphoto
+
+License
+-------
+
+    Copyright (C) 2006 Conrad Parker <conrad@vergenet.net>
+
+    Permission to use, copy, modify, distribute, and sell this software and
+    its documentation for any purpose is hereby granted without fee, provided
+    that the above copyright notice appear in all copies and that both that
+    copyright notice and this permission notice appear in supporting
+    documentation. No representations are made about the suitability of this
+    software for any purpose. It is provided "as is" without express or
+    implied warranty. 
+
+Contact
+-------
+
+Please direct any queries, bug reports etc. about FastPhoto to the author,
+Conrad Parker <conrad@metadecks.org>.
