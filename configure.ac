@@ -89,7 +89,7 @@ AC_ARG_ENABLE(experimental,
      [ ac_enable_experimental=yes ])
 
 if test "x${ac_enable_experimental}" = xyes ; then
-    AC_DEFINE(OGGZ_CONFIG_EXPERIMENTAL, [], [Define to build experimental code])
+    AC_DEFINE(FASTPHOTO_CONFIG_EXPERIMENTAL, [], [Define to build experimental code])
 fi
 
 # Checks for header files.
