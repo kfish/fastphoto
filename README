@@ -26,8 +26,8 @@ http://www.kfish.org/software/fastphoto/
 Development
 -----------
 
-FastPhoto is maintained in Subversion:
-svn co http://svn.kfish.org/fastphoto/trunk fastphoto
+FastPhoto is maintained in git at http://github.com/kfish/fastphoto:
+git clone git://github.com/kfish/fastphoto.git 
 
 License
 -------
