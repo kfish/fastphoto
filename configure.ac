@@ -117,27 +117,21 @@ esac
 # Checks for library functions.
 
 #
-# Detect Epeg
+# Detect libjpeg
 #
+AC_CHECK_HEADERS(jpeglib.h)
 
-export PKG_CONFIG_PATH=$PWD/epeg:$PKG_CONFIG_PATH
-PKG_CHECK_MODULES(EPEG, epeg >= 0.9.0,
-                  HAVE_EPEG="yes", HAVE_EPEG="no")
-
-if test "$HAVE_EPEG" = "yes" ; then
-  AC_DEFINE([HAVE_EPEG], [], [Define if epeg is found])
-  AC_SUBST(EPEG_CFLAGS)
-  AC_SUBST(EPEG_LIBS)
-else
-  AC_MSG_ERROR([
-***
-*** Epeg 1.0 development library is not installed
-***
-*** Please update PKG_CONFIG_PATH to point to Epeg's source folder
-*** or run ./get_epeg_cvs.sh
-***
-])
+if test "$HAVE_JPEGLIB_H" = "no"; then
+  AC_MSG_ERROR(jpeglib.h not found! try --with-jpeg-dir=<DIR>)
 fi
+
+AC_CHECK_LIB(jpeg,jpeg_read_header)
+
+if test "$HAVE_LIBJPEG" = "no"; then
+  AC_MSG_ERROR(libjpeg not found! try --with-jpeg-dir=<DIR>)
+fi
+
+#LIBS="$LIBS -ljpeg"
 
 dnl
 dnl  Configuration tests complete -- provide summary of results.

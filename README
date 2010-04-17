@@ -6,9 +6,9 @@ can be installed on a web server as a handler for files of type image/jpeg,
 providing fast server-side resizing with (optional) transparent caching. It
 can also be used as a commandline application.
 
-FastPhoto uses Epeg, a high-performance JPEG resizing library which decodes
-only the DCT coefficients needed to reconstruct an image of the desired size,
-and avoids colorspace conversions where possible.
+FastPhoto is based on Epeg, high-performance JPEG resizing code which
+decodes only the DCT coefficients needed to reconstruct an image of the
+desired size, and avoids colorspace conversions where possible.
 
 FastPhoto preserves the aspect of the original file unless both width and
 height options are specified. 

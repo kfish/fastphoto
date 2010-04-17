@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include <Epeg.h>
 
+#include "Epeg.h"
 #include "fastphoto.h"
 #include "photo.h"
 
