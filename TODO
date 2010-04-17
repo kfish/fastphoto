@@ -2,6 +2,10 @@ This is a loosely-categorized list of outstanding tasks and ideas for improving
 fastphoto. When implementing any of these, please include an update to this TODO
 file removing that task, in the same commit.
 
+* Pull epeg.c direction into fastphoto, as libepeg is no longer maintained upstream.
+(JPEG load/save has been pulled directly into Evas, but an Evas backend would be
+slow as it always goes via RGB).
+
 * Horms reported a problem with passing negative values to epeg_decode_size_set():
 	it produces a 1x1 puce colored image. Test if this is fixed in libepeg, in
 	any case guard against negative values.
