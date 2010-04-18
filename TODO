@@ -2,6 +2,13 @@ This is a loosely-categorized list of outstanding tasks and ideas for improving
 fastphoto. When implementing any of these, please include an update to this TODO
 file removing that task, in the same commit.
 
+Example script
+	* add a shell script that generates an index.html file for the photos
+	in the current directory
+	* add a recursive option to descend a photo library
+	* look for header.html, footer.html files
+	* look recursively in .., ../.. etc. until template files are found
+
 * Horms reported a problem with passing negative values to epeg_decode_size_set():
 	it produces a 1x1 puce colored image. Test if this is fixed in libepeg, in
 	any case guard against negative values.
