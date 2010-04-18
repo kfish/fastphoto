@@ -9,6 +9,14 @@ Example script
 	* look for header.html, footer.html files
 	* look recursively in .., ../.. etc. until template files are found
 
+Benchmarking
+	* get a large archive of photos
+	* time generation of all thumbnails
+	* plot thumbnail size vs. generation time for archive
+	* do similar timings using imagemagick, other tools?
+	* do similar timings using libjpeg-turbo
+	* plot comparison graph
+
 * Horms reported a problem with passing negative values to epeg_decode_size_set():
 	it produces a 1x1 puce colored image. Test if this is fixed in libepeg, in
 	any case guard against negative values.
